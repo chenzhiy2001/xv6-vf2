@@ -10,7 +10,9 @@
 #include "include/string.h"
 #include "include/printf.h"
 
+#ifndef DEBUG
 #define DEBUG
+#endif
 
 /* fields that start with "_" are something we don't use */
 

@@ -79,13 +79,14 @@ LD = $(TOOLPREFIX)ld
 OBJCOPY = $(TOOLPREFIX)objcopy
 OBJDUMP = $(TOOLPREFIX)objdump
 
-CFLAGS = -Wall -Werror -O -fno-omit-frame-pointer -ggdb -g
+CFLAGS = -Wall -Werror -O0 -fno-omit-frame-pointer -ggdb -g3
 CFLAGS += -D$(board)
 CFLAGS += -MD
 CFLAGS += -mcmodel=medany
 CFLAGS += -ffreestanding -fno-common -nostdlib -mno-relax
 CFLAGS += -I.
 CFLAGS += $(shell $(CC) -fno-stack-protector -E -x c /dev/null >/dev/null 2>&1 && echo -fno-stack-protector)
+CFLAGS += -Wa,--gen-debug,-D,--nocompress-debug-sections,--gdwarf-5## otherwise 'No source file named /home/oslab/xv6-vf2/kernel/trampoline.S'
 
 ifeq ($(mode), debug) 
 CFLAGS += -DDEBUG 
@@ -98,6 +99,7 @@ endif
 ifeq ($(platform), vf2)
 CFLAGS += -DVF2 
 endif
+
 
 LDFLAGS = -z max-page-size=4096
 
@@ -113,6 +115,8 @@ ifeq ($(platform), vf2)
 linker = ./linker/vf2.ld
 endif
 
+DWOs = $(shell ls $K/*.dwo)
+
 # Compile Kernel
 $T/kernel.bin: $(OBJS) $(linker) $U/initcode
 	@if [ ! -d "./target" ]; then mkdir target; fi
@@ -121,7 +125,8 @@ $T/kernel.bin: $(OBJS) $(linker) $U/initcode
 	@$(OBJDUMP) -t $T/kernel | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' > $T/kernel.sym
 	@$(OBJCOPY) -O binary $T/kernel $T/kernel.bin
   
-build: $T/kernel userprogs
+# make sure you already did hardcoded_ramdisk
+build: $T/kernel userprogs 
 
 # Compile RustSBI
 RUSTSBI:
@@ -229,7 +234,7 @@ UPROGS=\
 
 userprogs: $(UPROGS)
 
-dst=mnt
+dst=/mnt
 
 # @sudo cp $U/_init $(dst)/init
 # @sudo cp $U/_sh $(dst)/sh
@@ -237,11 +242,11 @@ dst=mnt
 fs: $(UPROGS)
 	@if [ `uname -s` = "Linux" -a ! -f "fs.img" ]; then \
 			echo "making fs image..."; \
-			dd if=/dev/zero of=fs.img bs=512k count=256; \
+			dd if=/dev/zero of=fs.img bs=8k count=32; \
 			mkfs.vfat -F 32 fs.img; \
 	fi
 	@if [ `uname -s` = "Linux" ]; then \
-		@sudo mount fs.img $(dst); \
+		sudo mount fs.img $(dst); \
 	fi
 	@if [ `uname -s` = "Darwin" ]; then \
 		hdiutil create -fs FAT32 -volname xv6 -type UDIF -size 128M -layout none fs; \
@@ -250,11 +255,19 @@ fs: $(UPROGS)
 		hdiutil mount -mountpoint `pwd`/mnt fs.img; \
 	fi
 	@if [ ! -d "$(dst)/bin" ]; then sudo mkdir $(dst)/bin; fi
-	@sudo cp README $(dst)/README
-	@for file in $$( ls $U/_* ); do \
-		sudo cp $$file $(dst)/$${file#$U/_};\
-		sudo cp $$file $(dst)/bin/$${file#$U/_}; done
+	@sudo cp README.md $(dst)/README
+	@sudo cp $U/_cat $(dst)/cat
+	@sudo cp $U/_ls $(dst)/ls
+	@sudo cp $U/_init $(dst)/init
+	@sudo cp $U/_sh $(dst)/sh
+#	@for file in $$( ls $U/_* ); do \
+# 		sudo cp $$file $(dst)/$${file#$U/_};\
+# 		sudo cp $$file $(dst)/bin/$${file#$U/_}; done
 	@sudo umount $(dst)
+
+hardcoded_ramdisk:fs
+	@cp fs.img fs_img
+	@xxd -i fs_img > $K/include/ramdisk.h
 
 # Write sdcard
 sdcard: fs
@@ -264,12 +277,15 @@ sdcard: fs
 	else \
 		echo "sd card not detected!"; fi
 
+# .asm is considered generated and will be removed. So always use .S if you write an asm file on your own.
 clean: 
 	rm -f *.tex *.dvi *.idx *.aux *.log *.ind *.ilg \
-	*/*.o */*.d */*.asm */*.sym \
+	*/*.o */*.d */*.asm */*.sym */*.dwo */*.dwp \
 	$T/* \
 	$U/initcode $U/initcode.out \
 	$K/kernel \
 	.gdbinit \
 	$U/usys.S \
-	$(UPROGS)
+	$(UPROGS) \
+	fs_img \
+	fs.img

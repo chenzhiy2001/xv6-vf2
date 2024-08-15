@@ -1,0 +1,154 @@
+{
+    "version": "0.2.0",
+    "configurations": [      
+        {
+            "type": "gdb",
+            "request": "attach",
+            "name": "Attach to Qemu",
+            "autorun": ["set arch riscv:rv64","add-symbol-file ${workspaceFolder}/target/kernel","add-symbol-file ${workspaceFolder}/kernel/trampoline.o"],
+            "target": ":3333",
+            "remote": true,
+            "cwd": "/home/oslab/xv6-vf2",
+            "valuesFormatting": "parseText",
+            "gdbpath": "riscv64-unknown-elf-gdb",
+            "showDevDebugOutput":true,
+            "internalConsoleOptions": "openOnSessionStart",
+            "printCalls": true,
+            "stopAtConnect": true,
+            //"debugServer": 4711,//tiaoshi
+            "qemuPath": "${workspaceFolder}/openocd.sh",
+            "qemuArgs": [
+                "${workspaceFolder}/openocd.cfg"
+            ],
+            "program_counter_id": 32,
+            "first_breakpoint_group": "kernel",
+            "second_breakpoint_group":"${workspaceFolder}/xv6-user/initcode.S",//initcode.S not traceable, but ok
+            "kernel_memory_ranges":[["0x3fff0000","0x1fffffffff"]],
+            "user_memory_ranges":[["0x00000000","0x3fffffff"],["0x1fffffffff","0x3fffffffff"]], //overlapped part is TRAMPOLINE
+            "border_breakpoints":[
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                //     "line":6
+                // },
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                //     "line":11
+                // },
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                //     "line":16
+                // },
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                //     "line":21
+                // },
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                //     "line":26
+                // },
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                //     "line":31
+                // },
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                //     "line":36
+                // },
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                //     "line":41
+                // },
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                //     "line":46
+                // },
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                //     "line":51
+                // },
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                //     "line":56
+                // },
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                //     "line":61
+                // },
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                //     "line":66
+                // },
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                //     "line":71
+                // },{
+                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                //     "line":76
+                // },
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                //     "line":81
+                // },
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                //     "line":86
+                // },
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                //     "line":91
+                // },
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                //     "line":96
+                // },
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                //     "line":101
+                // },
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                //     "line":106
+                // },
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/initcode.S",
+                //     "line":12
+                // },
+                // {
+                //     "filepath": "${workspaceFolder}/xv6-user/initcode.S",
+                //     "line":17
+                // },
+                {
+                    "filepath": "${workspaceFolder}/kernel/trampoline.S",
+                    "line":29
+                },
+                {
+                    "filepath": "${workspaceFolder}/kernel/trap.c",
+                    "line":145
+                }
+            ],
+            "hook_breakpoints":[
+                {
+                    "breakpoint": {
+                        "file": "${workspaceFolder}/kernel/sysproc.c",
+                        "line": 45
+                    },
+                    "behavior": {
+                        "isAsync": true,
+                        "functionArguments": "",
+                        "functionBody": "let p=await this.getStringVariable('path'); return '${workspaceFolder}/xv6-user/'+p+'.c' "
+                    }
+                }
+            ],
+           "filePathToBreakpointGroupNames": {
+                "isAsync": false,
+                "functionArguments": "filePathStr",
+                "functionBody": "let usergroups = ['${workspaceFolder}/xv6-user/usys.S','${workspaceFolder}/xv6-user/ln.c', '${workspaceFolder}/xv6-user/ls.c', '${workspaceFolder}/xv6-user/rm.c', '${workspaceFolder}/xv6-user/sh.c', '${workspaceFolder}/xv6-user/wc.c', '${workspaceFolder}/xv6-user/cat.c', '${workspaceFolder}/xv6-user/echo.c', '${workspaceFolder}/xv6-user/grep.c', '${workspaceFolder}/xv6-user/init.c', '${workspaceFolder}/xv6-user/kill.c', '${workspaceFolder}/xv6-user/ulib.c', '${workspaceFolder}/xv6-user/grind.c', '${workspaceFolder}/xv6-user/mkdir.c', '${workspaceFolder}/xv6-user/printf.c', '${workspaceFolder}/xv6-user/zombie.c', '${workspaceFolder}/xv6-user/umalloc.c', '${workspaceFolder}/xv6-user/forktest.c', '${workspaceFolder}/xv6-user/stressfs.c'];if(filePathStr.includes('kernel/trampoline.S')){return usergroups.concat('kernel');} else if (filePathStr.includes('kernel')) { return ['kernel']; } else if (filePathStr === '${workspaceFolder}/xv6-user/usys.S' || filePathStr === '${workspaceFolder}/xv6-user/ulib.c') { return usergroups; } else if (filePathStr.includes('xv6-user') && filePathStr !== '${workspaceFolder}/xv6-user/usys.S') { return [filePathStr]; } else { return ['kernel']; }"
+            },
+            "breakpointGroupNameToDebugFilePaths":{
+                "isAsync": false,
+                "functionArguments": "groupName",
+                "functionBody": "if (groupName === 'kernel') {        return ['${workspaceFolder}/target/kernel','${workspaceFolder}/kernel/trampoline.o'];    } else if(groupName==='${workspaceFolder}/xv6-user/initcode.S'){return ['${workspaceFolder}/xv6-user/initcode.out','${workspaceFolder}/target/kernel','${workspaceFolder}/kernel/trampoline.o']}  else {        let pathSplited = groupName.split('/');            let filename = pathSplited[pathSplited.length - 1].split('.');         let filenameWithoutExtension = filename[filename.length - 2];        return ['${workspaceFolder}/kernel/trampoline.o','${workspaceFolder}/target/kernel','${workspaceFolder}/xv6-user/' + '_'+filenameWithoutExtension];    }"
+            }
+        },
+    ],
+}
