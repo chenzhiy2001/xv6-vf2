@@ -74,7 +74,7 @@ endif
 TOOLPREFIX	:= riscv64-unknown-elf-
 # TOOLPREFIX	:= riscv64-linux-gnu-
 CC = $(TOOLPREFIX)gcc
-AS = $(TOOLPREFIX)gas
+AS = $(TOOLPREFIX)as
 LD = $(TOOLPREFIX)ld
 OBJCOPY = $(TOOLPREFIX)objcopy
 OBJDUMP = $(TOOLPREFIX)objdump
@@ -101,7 +101,7 @@ CFLAGS += -DVF2
 endif
 
 
-LDFLAGS = -z max-page-size=4096
+LDFLAGS = -z max-page-size=4096 -g
 
 ifeq ($(platform), k210)
 linker = ./linker/k210.ld
@@ -189,6 +189,9 @@ _%: %.o $(ULIB)
 	$(OBJDUMP) -S $@ > $*.asm
 	$(OBJDUMP) -t $@ | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' > $*.sym
 
+# $K/trampoline.o : $K/trampoline.S
+# 	$(CC) $(CFLAGS) -Wa,--gstabs+ -c -o $K/trampoline.o $K/trampoline.S
+
 $U/usys.S : $U/usys.pl
 	@perl $U/usys.pl > $U/usys.S
 
@@ -200,6 +203,8 @@ $U/_forktest: $U/forktest.o $(ULIB)
 	# in order to be able to max out the proc table.
 	$(LD) $(LDFLAGS) -N -e main -Ttext 0 -o $U/_forktest $U/forktest.o $U/ulib.o $U/usys.o
 	$(OBJDUMP) -S $U/_forktest > $U/forktest.asm
+
+
 
 # Prevent deletion of intermediate files, e.g. cat.o, after first build, so
 # that disk image changes after first build are persistent until clean.  More

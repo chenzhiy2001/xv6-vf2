@@ -5,7 +5,7 @@
             "type": "gdb",
             "request": "attach",
             "name": "Attach to Qemu",
-            "autorun": ["set arch riscv:rv64","add-symbol-file ${workspaceFolder}/target/kernel","add-symbol-file ${workspaceFolder}/kernel/trampoline.o"],
+            "autorun": ["set arch riscv:rv64","add-symbol-file ${workspaceFolder}/target/kernel"],
             "target": ":3333",
             "remote": true,
             "cwd": "/home/oslab/xv6-vf2",
@@ -26,100 +26,116 @@
             "kernel_memory_ranges":[["0x3fff0000","0x1fffffffff"]],
             "user_memory_ranges":[["0x00000000","0x3fffffff"],["0x1fffffffff","0x3fffffffff"]], //overlapped part is TRAMPOLINE
             "border_breakpoints":[
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
-                //     "line":6
-                // },
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
-                //     "line":11
-                // },
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
-                //     "line":16
-                // },
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
-                //     "line":21
-                // },
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
-                //     "line":26
-                // },
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
-                //     "line":31
-                // },
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
-                //     "line":36
-                // },
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
-                //     "line":41
-                // },
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
-                //     "line":46
-                // },
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
-                //     "line":51
-                // },
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
-                //     "line":56
-                // },
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
-                //     "line":61
-                // },
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
-                //     "line":66
-                // },
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
-                //     "line":71
-                // },{
-                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
-                //     "line":76
-                // },
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
-                //     "line":81
-                // },
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
-                //     "line":86
-                // },
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
-                //     "line":91
-                // },
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
-                //     "line":96
-                // },
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
-                //     "line":101
-                // },
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/usys.S",
-                //     "line":106
-                // },
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/initcode.S",
-                //     "line":12
-                // },
-                // {
-                //     "filepath": "${workspaceFolder}/xv6-user/initcode.S",
-                //     "line":17
-                // },
                 {
-                    "filepath": "${workspaceFolder}/kernel/trampoline.S",
-                    "line":29
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":5
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":10
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":15
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":20
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":25
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":30
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":35
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":40
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":45
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":50
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":55
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":60
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":65
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":70
+                },{
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":75
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":80
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":85
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":90
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":95
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":100
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":105
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":110
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":115
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":120
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":125
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/usys.S",
+                    "line":130
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/initcode.S",
+                    "line":11
+                },
+                {
+                    "filepath": "${workspaceFolder}/xv6-user/initcode.S",
+                    "line":16
                 },
                 {
                     "filepath": "${workspaceFolder}/kernel/trap.c",
@@ -135,7 +151,7 @@
                     "behavior": {
                         "isAsync": true,
                         "functionArguments": "",
-                        "functionBody": "let p=await this.getStringVariable('path'); return '${workspaceFolder}/xv6-user/'+p+'.c' "
+                        "functionBody": "let p=await this.getStringVariable('path'); return '${workspaceFolder}/xv6-user'+p+'.c' " //p is like '/init' so we remove the / before it
                     }
                 }
             ],
@@ -147,7 +163,7 @@
             "breakpointGroupNameToDebugFilePaths":{
                 "isAsync": false,
                 "functionArguments": "groupName",
-                "functionBody": "if (groupName === 'kernel') {        return ['${workspaceFolder}/target/kernel','${workspaceFolder}/kernel/trampoline.o'];    } else if(groupName==='${workspaceFolder}/xv6-user/initcode.S'){return ['${workspaceFolder}/xv6-user/initcode.out','${workspaceFolder}/target/kernel','${workspaceFolder}/kernel/trampoline.o']}  else {        let pathSplited = groupName.split('/');            let filename = pathSplited[pathSplited.length - 1].split('.');         let filenameWithoutExtension = filename[filename.length - 2];        return ['${workspaceFolder}/kernel/trampoline.o','${workspaceFolder}/target/kernel','${workspaceFolder}/xv6-user/' + '_'+filenameWithoutExtension];    }"
+                "functionBody": "if (groupName === 'kernel') {        return ['${workspaceFolder}/target/kernel'];    } else if(groupName==='${workspaceFolder}/xv6-user/initcode.S'){return ['${workspaceFolder}/xv6-user/initcode.out','${workspaceFolder}/target/kernel']}  else {        let pathSplited = groupName.split('/');            let filename = pathSplited[pathSplited.length - 1].split('.');         let filenameWithoutExtension = filename[filename.length - 2];        return ['${workspaceFolder}/target/kernel','${workspaceFolder}/xv6-user/' + '_'+filenameWithoutExtension];    }"
             }
         },
     ],
